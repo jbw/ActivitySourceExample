@@ -4,6 +4,24 @@ using System.Threading.Tasks;
 
 namespace ActivitySourceExample
 {
+    public static class Listener
+    {
+        public static ActivityListener CreateActivityListener()
+        {
+            using var listener = new ActivityListener
+            {
+                ShouldListenTo = _ => true,
+                Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
+                ActivityStarted = activity => Console.WriteLine($"{activity.ParentId}:{activity.Id} - Start"),
+                ActivityStopped = activity => Console.WriteLine($"{activity.ParentId}:{activity.Id} - Stop")
+            };
+
+            ActivitySource.AddActivityListener(listener);
+
+            return listener;
+        }
+    }
+
     public static class ActivityCreator
     {
         public static string ActivitySourceName = typeof(ActivityCreator).Assembly.GetName().Name;
