@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  activitysourceexample:
+    image: ${DOCKER_REGISTRY-}activitysourceexample
+    build:
+      context: .
+      dockerfile: ActivitySourceExample/Dockerfile
+
+networks:
+  default:
+    external:
+      name: burgers.network

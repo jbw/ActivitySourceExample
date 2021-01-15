@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ActivitySourceExample": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
