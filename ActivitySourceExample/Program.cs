@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Diagnostics;
 using ActivitySourceExample;
+using ActivitySourceExample.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-// Build the trace provider using OpenTelementry.
-// Export activity to console and Jaeger.
 
-// See https://www.jaegertracing.io/docs/1.21/getting-started/ and run Jaeger 
-// in a Docker comtainer.
+Host.CreateDefaultBuilder(args)
+    .ConfigureServices((hostContext, services) =>
+    {
 
-using var openTelemetry = Sdk.CreateTracerProviderBuilder()
-    .AddSource(ActivityCreator.ActivitySourceName)
-    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ActivitySourceExample.Console"))
-    .AddJaegerExporter()
-    .AddConsoleExporter()
-    .Build();
+        services.AddOpenTelemetryTracing((provider, builder) =>
+        {
+            builder
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ActivitySourceExample.Console"))
+                .AddInstrumentationExample()
+                .AddJaegerExporter()
+                .AddConsoleExporter();
+        });
 
-// Created activity will be exported to console and Jaeger.
-ActivityCreator.CreateActivity();
+        services.AddHostedService<ExampleService>();
 
-Console.ReadLine();
+    })
+    .Build()
+    .Run();
