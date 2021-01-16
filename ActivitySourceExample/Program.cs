@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using MassTransit;
 
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
@@ -23,6 +24,18 @@ Host.CreateDefaultBuilder(args)
                 .AddJaegerExporter()
                 .AddConsoleExporter();
         });
+
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<ExampleConsumer>();
+
+            x.UsingInMemory((context, cfg) =>
+            {        
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
+        services.AddMassTransitHostedService();
 
         services.AddHostedService<ExampleService>();
 
