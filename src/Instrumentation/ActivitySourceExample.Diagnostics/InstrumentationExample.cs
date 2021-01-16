@@ -9,38 +9,24 @@ namespace ActivitySourceExample.Diagnostics
     {
         internal static string ActivitySourceName = typeof(InstrumentationExample).Assembly.GetName().Name;
         internal static string ActivitySourceVersion = typeof(InstrumentationExample).Assembly.GetName().Version.ToString();
-        private static readonly string ActivityName = ActivitySourceName + ".Execute";
-
-        private static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
+        internal static readonly string ActivityName = ActivitySourceName + ".Execute";
+        internal static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
 
         public InstrumentationExample()
         {
+            //ActivitySource.AddActivityListener(new ActivityListener
+            //{
+            //    ShouldListenTo = _ =>
+            //    {
+            //        return true;
+            //    },
+            //    Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllDataAndRecorded,
+            //    ActivityStarted = activity => Console.WriteLine($"{activity.ParentId}:{activity.Id} - Start"),
+            //    ActivityStopped = activity => Console.WriteLine($"{activity.ParentId}:{activity.Id} - Stop")
+            //});
+
             DiagnosticListener.AllListeners.Subscribe(new DiagnosticListenerObserver());
-
         }
-
-        public Activity StartActivity()
-        {
-
-            var activity = ActivitySource.StartActivity(ActivityName, ActivityKind.Client);
-
-            if (activity == null) return null;
-
-            activity.SetParentId(Guid.NewGuid().ToString());
-
-            activity.Start();
-
-            return activity;
-        }
-
-
-        public void StopActivity(Activity activity)
-        {
-            activity.SetEndTime(DateTime.UtcNow);
-
-            activity.Stop();
-        }
-
 
         public void Dispose()
         {

@@ -1,38 +1,46 @@
-﻿using ActivitySourceExample.Diagnostics;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ActivitySourceExample
 {
 
-    public class ExampleService : IHostedService
+    public class ExampleService : IHostedService, IDisposable
     {
         private IPublishEndpoint _publishEndpoint;
+        private Timer _timer;
 
         public ExampleService(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
-
         }
 
-
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
 
-            await _publishEndpoint.Publish<ExampleMessage>(new { Id = Guid.NewGuid().ToString() }, cancellationToken);
+            // Publish the message every 30 seconds.
+            _timer = new Timer(
+                (e) => _publishEndpoint.Publish<ExampleMessage>(new { Id = Guid.NewGuid().ToString() }, cancellationToken),
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromSeconds(30));
+
+            return Task.CompletedTask;
 
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _timer?.Change(Timeout.Infinite, 0);
+
             return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
     }
 }

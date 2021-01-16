@@ -6,6 +6,11 @@ namespace ActivitySourceExample.Diagnostics
 {
     public class DiagnosticListenerObserver : IObserver<DiagnosticListener>
     {
+
+        public DiagnosticListenerObserver( )
+        {
+        }
+
         public IObserver<KeyValuePair<string, object>> EventSubscription { get; private set; }
 
         public void OnCompleted()
