@@ -7,11 +7,11 @@ namespace ActivitySourceExample.Diagnostics
 
     public class InstrumentationExmaple : IDisposable
     {
-        public static string ActivitySourceName = typeof(InstrumentationExmaple).Assembly.GetName().Name;
-        public static string ActivitySourceVersion = typeof(InstrumentationExmaple).Assembly.GetName().Version.ToString();
-        private static string ActivityName = ActivitySourceName + ".Execute";
+        internal static string ActivitySourceName = typeof(InstrumentationExmaple).Assembly.GetName().Name;
+        internal static string ActivitySourceVersion = typeof(InstrumentationExmaple).Assembly.GetName().Version.ToString();
+        private static readonly string ActivityName = ActivitySourceName + ".Execute";
 
-        private static ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
+        private static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
 
         public InstrumentationExmaple()
         {
@@ -30,7 +30,6 @@ namespace ActivitySourceExample.Diagnostics
             activity.Start();
 
             return activity;
-
         }
 
 
