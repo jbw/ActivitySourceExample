@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 namespace ActivitySourceExample.Diagnostics
 {
 
-    public class Instrumentation : IDisposable
+    public class InstrumentationExmaple : IDisposable
     {
-        public static string ActivitySourceName = typeof(Instrumentation).Assembly.GetName().Name;
-        public static string ActivitySourceVersion = typeof(Instrumentation).Assembly.GetName().Version.ToString();
+        public static string ActivitySourceName = typeof(InstrumentationExmaple).Assembly.GetName().Name;
+        public static string ActivitySourceVersion = typeof(InstrumentationExmaple).Assembly.GetName().Version.ToString();
         private static string ActivityName = ActivitySourceName + ".Execute";
 
         private static ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
 
-        public Instrumentation()
+        public InstrumentationExmaple()
         {
 
         }
@@ -41,19 +41,6 @@ namespace ActivitySourceExample.Diagnostics
             activity.Stop();
         }
 
-        static void PrintActivity(Activity activity)
-        {
-            Console.WriteLine("================= Activity Info ===========================");
-            Console.WriteLine(activity.OperationName);
-            Console.WriteLine(activity.Id);
-            Console.WriteLine(activity.TraceStateString);
-            Console.WriteLine(activity.ParentSpanId);
-            Console.WriteLine(activity.TraceId);
-            Console.WriteLine(activity.SpanId);
-            Console.WriteLine("===========================================================");
-            Console.WriteLine();
-
-        }
 
         public void Dispose()
         {

@@ -14,10 +14,6 @@ Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
-        Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-
-        var instrument = new Instrumentation();
-
 
         services.AddOpenTelemetryTracing((provider, builder) =>
         {
@@ -29,7 +25,6 @@ Host.CreateDefaultBuilder(args)
         });
 
         services.AddHostedService<ExampleService>();
-
 
     })
     .Build()

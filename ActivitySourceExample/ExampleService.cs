@@ -19,7 +19,7 @@ namespace ActivitySourceExample
         public Task StartAsync(CancellationToken cancellationToken)
         {
 
-            var instructmentation = new Instrumentation();
+            var instructmentation = new InstrumentationExmaple();
 
             var activity = instructmentation.StartActivity();
 
