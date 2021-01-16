@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using ActivitySourceExample;
 using ActivitySourceExample.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +10,21 @@ using MassTransit;
 
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-
-Host.CreateDefaultBuilder(args)
+await Host.CreateDefaultBuilder()
     .ConfigureServices((hostContext, services) =>
     {
+
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<ExampleConsumer>();
+
+            x.UsingInMemory((context, cfg) =>
+            {
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
+        services.AddMassTransitHostedService();
 
         services.AddOpenTelemetryTracing((provider, builder) =>
         {
@@ -25,20 +35,9 @@ Host.CreateDefaultBuilder(args)
                 .AddConsoleExporter();
         });
 
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumer<ExampleConsumer>();
-
-            x.UsingInMemory((context, cfg) =>
-            {        
-                cfg.ConfigureEndpoints(context);
-            });
-        });
-
-        services.AddMassTransitHostedService();
-
         services.AddHostedService<ExampleService>();
 
     })
     .Build()
-    .Run();
+    .RunAsync();
+

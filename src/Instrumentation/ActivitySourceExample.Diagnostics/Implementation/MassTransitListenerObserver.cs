@@ -1,8 +1,6 @@
-﻿using ActivitySourceExample.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace ActivitySourceExample.Diagnostics
 {
@@ -11,6 +9,7 @@ namespace ActivitySourceExample.Diagnostics
 
         public MassTransitListenerObserver()
         {
+
         }
 
         public void OnCompleted()
@@ -23,45 +22,15 @@ namespace ActivitySourceExample.Diagnostics
 
         }
 
-        public void OnNext(KeyValuePair<string, object> value)
+        public void OnNext(KeyValuePair<string, object> context)
         {
-            var producer = new MassTransitActivityProducer();
-            var activity = producer.StartActivity();
+            var parent = Activity.Current;
+            var activity = MassTransitActivity.Translate(parent, context);
 
-            // Something is listening else nothing is listening...
-            if (activity != null)
-            {
-                producer.StopActivity(activity);
-            }
-        }
-    }
-
-    public class MassTransitActivityProducer
-    {
-
-        public Activity StartActivity()
-        {
-
-            var activity = InstrumentationExample.ActivitySource.StartActivity(InstrumentationExample.ActivityName, ActivityKind.Client);
-
-            if (activity == null) return null;
-
-            activity.SetParentId(Guid.NewGuid().ToString());
+            if (activity == null) return;
 
             activity.Start();
-
-            return activity;
-        }
-
-
-        public void StopActivity(Activity activity)
-        {
-            activity.SetEndTime(DateTime.UtcNow);
-
             activity.Stop();
         }
-
     }
-
-
 }
