@@ -11,17 +11,19 @@ namespace ActivitySourceExample
 {
     public class ExampleService : IHostedService
     {
-        private Instrumentation _instructmentation;
 
-        public ExampleService(Instrumentation instrumentation)
+        public ExampleService()
         {
-            _instructmentation = instrumentation;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var activity = _instructmentation.StartActivity();
-            _instructmentation.StopActivity(activity);
+
+            var instructmentation = new Instrumentation();
+
+            var activity = instructmentation.StartActivity();
+
+            instructmentation.StopActivity(activity);
 
             return Task.CompletedTask;
         }

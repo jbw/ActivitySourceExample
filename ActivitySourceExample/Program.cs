@@ -18,14 +18,12 @@ Host.CreateDefaultBuilder(args)
 
         var instrument = new Instrumentation();
 
-        services.AddSingleton(instrument);
 
         services.AddOpenTelemetryTracing((provider, builder) =>
         {
             builder
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ActivitySourceExample.Console"))
                 .AddInstrumentationExample()
-                .AddInstrumentation(() => provider.GetRequiredService<Instrumentation>())
                 .AddJaegerExporter()
                 .AddConsoleExporter();
         });

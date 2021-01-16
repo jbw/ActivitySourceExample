@@ -12,7 +12,8 @@ namespace ActivitySourceExample.Diagnostics
         public static TracerProviderBuilder AddInstrumentationExample(this TracerProviderBuilder builder)
         {
             builder
-                .AddSource(Instrumentation.ActivitySourceName);
+                .AddSource(Instrumentation.ActivitySourceName)
+                .AddInstrumentation(() => new Instrumentation());
 
             return builder;
 
