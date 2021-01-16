@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ActivitySourceExample
+namespace ActivitySourceExample.Diagnostics
 {
     public class DiagnosticListenerObserver : IObserver<DiagnosticListener>
     {

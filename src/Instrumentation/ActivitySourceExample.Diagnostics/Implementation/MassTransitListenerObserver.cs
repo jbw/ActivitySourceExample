@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ActivitySourceExample
+namespace ActivitySourceExample.Diagnostics
 {
     public class MassTransitListenerObserver : IObserver<KeyValuePair<string, object>>
     {

@@ -20,9 +20,6 @@ namespace ActivitySourceExample
         {
             _publishEndpoint = publishEndpoint;
 
-            // Example of MassTransit's DiagnosticSource hooks
-            DiagnosticListener.AllListeners.Subscribe(new DiagnosticListenerObserver());
-
         }
 
 

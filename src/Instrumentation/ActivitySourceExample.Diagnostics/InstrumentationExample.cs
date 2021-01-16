@@ -15,6 +15,7 @@ namespace ActivitySourceExample.Diagnostics
 
         public InstrumentationExample()
         {
+            DiagnosticListener.AllListeners.Subscribe(new DiagnosticListenerObserver());
 
         }
 
