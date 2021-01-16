@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,7 +19,12 @@ namespace ActivitySourceExample
         public ExampleService(IPublishEndpoint publishEndpoint)
         {
             _publishEndpoint = publishEndpoint;
+
+            // Example of MassTransit's DiagnosticSource hooks
+            DiagnosticListener.AllListeners.Subscribe(new DiagnosticListenerObserver());
+
         }
+
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {

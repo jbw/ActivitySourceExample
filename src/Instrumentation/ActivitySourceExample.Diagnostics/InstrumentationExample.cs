@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 namespace ActivitySourceExample.Diagnostics
 {
 
-    public class InstrumentationExmaple : IDisposable
+    public class InstrumentationExample : IDisposable
     {
-        internal static string ActivitySourceName = typeof(InstrumentationExmaple).Assembly.GetName().Name;
-        internal static string ActivitySourceVersion = typeof(InstrumentationExmaple).Assembly.GetName().Version.ToString();
+        internal static string ActivitySourceName = typeof(InstrumentationExample).Assembly.GetName().Name;
+        internal static string ActivitySourceVersion = typeof(InstrumentationExample).Assembly.GetName().Version.ToString();
         private static readonly string ActivityName = ActivitySourceName + ".Execute";
 
         private static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
 
-        public InstrumentationExmaple()
+        public InstrumentationExample()
         {
 
         }
