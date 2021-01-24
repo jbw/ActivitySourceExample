@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivitySourceExample.Console", "ActivitySourceExample\ActivitySourceExample.Console.csproj", "{67214173-00C0-4F4F-AB08-EA9E0DD3F906}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivitySourceExample.Console", "src\ActivitySourceExample.Console\ActivitySourceExample.Console.csproj", "{67214173-00C0-4F4F-AB08-EA9E0DD3F906}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivitySourceExample.Diagnostics", "src\Instrumentation\ActivitySourceExample.Diagnostics\ActivitySourceExample.Diagnostics.csproj", "{20E910CC-6E9F-4607-A4CC-121CE8ACC712}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivitySourceExample.Diagnostics", "src\ActivitySourceExample.Diagnostics\ActivitySourceExample.Diagnostics.csproj", "{20E910CC-6E9F-4607-A4CC-121CE8ACC712}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

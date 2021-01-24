@@ -1,29 +1,24 @@
-﻿using ActivitySourceExample.Diagnostics;
+﻿using MassTransit;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ActivitySourceExample
 {
-    public class ExampleService : IHostedService
-    {
 
-        public ExampleService()
+    public class ExampleService : IHostedService, IDisposable
+    {
+        private IPublishEndpoint _publishEndpoint;
+
+        public ExampleService(IPublishEndpoint publishEndpoint)
         {
+            _publishEndpoint = publishEndpoint;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-
-            var instructmentation = new InstrumentationExmaple();
-
-            var activity = instructmentation.StartActivity();
-
-            instructmentation.StopActivity(activity);
+            _publishEndpoint.Publish<ExampleMessage>(new { Id = Guid.NewGuid().ToString() }, cancellationToken);
 
             return Task.CompletedTask;
         }
@@ -31,6 +26,10 @@ namespace ActivitySourceExample
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
