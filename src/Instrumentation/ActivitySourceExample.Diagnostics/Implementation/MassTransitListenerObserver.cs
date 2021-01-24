@@ -24,13 +24,11 @@ namespace ActivitySourceExample.Diagnostics
 
         public void OnNext(KeyValuePair<string, object> context)
         {
-            var parent = Activity.Current;
-            var activity = MassTransitActivity.Translate(parent, context);
+            var currentActivity = Activity.Current;
+            if (currentActivity == null) return;
 
-            if (activity == null) return;
+            MassTransitActivity.Translate(currentActivity, context);
 
-            activity.Start();
-            activity.Stop();
         }
     }
 }

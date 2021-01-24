@@ -10,29 +10,54 @@ namespace ActivitySourceExample.Diagnostics
         internal static readonly string ActivityName = ActivitySourceName + ".Execute";
         internal static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion);
 
-        public static Activity Translate(Activity parent, KeyValuePair<string, object> messageContext)
+        public static void Translate(Activity activity, KeyValuePair<string, object> messageContext)
         {
             var activityName = messageContext.Key;
 
-            var activity = ActivitySource.StartActivity(
+            var newActivity = ActivitySource.StartActivity(
                 name: activityName,
-                kind: parent.Kind,
-                parentContext: parent == null ? parent.Context : default,
-                links: parent.Links,
-                startTime: parent.StartTimeUtc
+                kind: GetActivityKind(activity),
+                parentContext: default,
+                startTime: activity.StartTimeUtc
             );
 
-            foreach (var bag in parent.Baggage)
-            {
-                activity.AddBaggage(bag.Key, bag.Value);
-            }
+            CopyBaggage(activity, newActivity);
+            CopyTags(activity, newActivity);
 
-            foreach (var tag in parent.Tags)
-            {
-                activity.AddTag(tag.Key, tag.Value.ToString());
-            }
+            newActivity.Stop();
+        }
 
-            return activity;
+        private static void CopyTags(Activity activity, Activity newActivity)
+        {
+            foreach (var tag in activity.Tags)
+            {
+                newActivity.AddTag(tag.Key, tag.Value.ToString());
+            }
+        }
+
+        private static void CopyBaggage(Activity activity, Activity newActivity)
+        {
+            foreach (var bag in activity.Baggage)
+            {
+                newActivity.AddBaggage(bag.Key, bag.Value);
+            }
+        }
+
+        private static ActivityKind GetActivityKind(Activity activity)
+        {
+            switch (activity.OperationName)
+            {
+                case "MassTransit.Transport.Send":
+                    return ActivityKind.Producer;
+                case "MassTransit.Transport.Receive":
+                    return ActivityKind.Consumer;
+                case "MassTransit.Consumer.Consume":
+                    return ActivityKind.Internal;
+                case "MassTransit.Consumer.Handle":
+                    return ActivityKind.Internal;
+                default:
+                    return activity.Kind;
+            };
         }
     }
 }

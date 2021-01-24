@@ -7,7 +7,7 @@ namespace ActivitySourceExample.Diagnostics
     public class DiagnosticListenerObserver : IObserver<DiagnosticListener>
     {
 
-        public DiagnosticListenerObserver( )
+        public DiagnosticListenerObserver()
         {
         }
 
