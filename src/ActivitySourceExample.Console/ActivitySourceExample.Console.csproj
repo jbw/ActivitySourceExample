@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Instrumentation\ActivitySourceExample.Diagnostics\ActivitySourceExample.Diagnostics.csproj" />
+    <ProjectReference Include="..\ActivitySourceExample.Diagnostics\ActivitySourceExample.Diagnostics.csproj" />
   </ItemGroup>
 
 </Project>
