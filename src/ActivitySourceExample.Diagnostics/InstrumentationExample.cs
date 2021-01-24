@@ -11,8 +11,6 @@ namespace ActivitySourceExample.Diagnostics
 
         public InstrumentationExample()
         {
-            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-
             ActivitySource.AddActivityListener(new ActivityListener
             {
                 ShouldListenTo = _ =>
